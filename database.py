@@ -2,13 +2,32 @@
 This is a database helper on AlechemySQL and PostgreSQL.
 """
 
+import csv
 import os
+from csv import DictReader
 
 from sqlalchemy import Column, Integer, String, create_engine, update
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
+
+# Helper function
+
+
+def read_csv_file_as_dict(filename):
+    """Reads a csv file and returns a dict"""
+    with open(filename, 'r') as csvfile:
+        reader = DictReader(csvfile, delimiter=',', quotechar='"')
+        return list(reader)
+
+
+def read_csv_file_as_list(filename):
+    """Reads a csv file and returns a dict"""
+    with open(filename, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        return list(reader)
+
 
 # Data manipulators
 
@@ -34,6 +53,12 @@ def update_first_and_last(session):
             values(first=first, last=last)
         )
         stmt.execute()
+
+
+def fetch_all(session, table):
+    """Fetches all records"""
+    query = session.query(table)
+    return query.statement.execute().fetchall()
 
 
 # Database helpers

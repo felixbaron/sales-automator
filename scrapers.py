@@ -15,7 +15,7 @@ def is_iteratable(button):
         return False
 
 
-def scrape_title(driver, url):
+def get_title(driver, url):
     """Rescrapes the title only"""
     driver.get(url)
     time.sleep(2)
@@ -74,7 +74,7 @@ def get_persons_linkedin(driver, url):
             url = person.get_attribute('href')
             persons.append({'url': url})
         button.click()
-        time.sleep(3)
+        time.sleep(5)
         button = driver.find_element_by_css_selector(
             'button[aria-label="Next"]')
     return persons
